@@ -126,6 +126,19 @@ class HtmlQuery:
 
                 return self
 
+        def tag(self, name, cls=None, id=None):
+                self._path += '/' + name
+                self._path += "[@class='%s']"%cls if cls is not None else ''
+                self._path += "[@id='%s']"%id if id is not None else ''
+
+                return self
+
+        def span(self, cls=None, id=None):
+                self._path += '/span'
+                self._path += "[@class='%s']"%cls if cls is not None else ''
+                self._path += "[@id='%s']"%id if id is not None else ''
+
+                return self
 
         def body(self):
                 pass
@@ -194,7 +207,10 @@ class HtmlQuery:
                 self._result = []
                 for e in r_elements:
                         r = self._attr.get(e)
-                        self._result.append(r if len(r) > 1 else r[0])       
+                        if len(r) > 0:
+                                self._result.append(r if len(r) > 1 else r[0])       
+                        else:
+                                self._result.append(e)
 
 
         def text(self):
@@ -250,6 +266,8 @@ class HtmlQuery:
         #img =
         #span =
         #etc.
+
+        input = partialmethod(tag, 'input')
 
         #def regex()
 
